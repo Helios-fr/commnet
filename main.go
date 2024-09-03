@@ -1,13 +1,14 @@
 package main
 
 import (
-	"comnet/utils"
+	"comnet/utils/encryption"
 	"fmt"
 )
 
 func main() {
+
 	// Generate key pair
-	publicKey, privateKey, _ := utils.GenerateKeyPair()
+	publicKey, privateKey, _ := encryption.GenerateKeyPair()
 
 	// Print public key
 	fmt.Println("Public key:")

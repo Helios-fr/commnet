@@ -1,4 +1,4 @@
-package utils
+package encryption
 
 /*
 This  module handles all elements of the encryption and decryption of the data, enabling the main function to deal with data as if it is not encrypted.
