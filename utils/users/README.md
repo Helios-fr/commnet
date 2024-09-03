@@ -7,6 +7,7 @@ Functions included in this file:
 - Validate user (ValidateUser: username*, publicKey) --> bool
 - Remove user (RemoveUser: username*) --> bool
 - Reset DB (resetDB: ) --> bool
+- Get Authority (GetAuthority: username*) --> int
 
 ### CreateUser --> bool
 This function appends a new user to the user data csv file, storing the username, public key, and private key if it is known.
@@ -22,3 +23,6 @@ This function removes the user from the user data csv file.
 
 ### ResetDB --> bool
 This function resets the user data csv file to the default state, removing all users.
+
+### GetAuthority --> int
+This function returns the line index of a given username in the user data csv file.
