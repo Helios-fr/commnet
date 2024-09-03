@@ -4,6 +4,7 @@ This modile handles all elements of user data, including the creation and replic
 Functions included in this file:
 - Create user (CreateUser: username*, publicKey*, privateKey) --> bool
 - Get user (GetUser: username*) --> publicKey, privateKey
+- Update user (UpdateUser: username*, publicKey*, privateKey) --> bool
 - Validate user (ValidateUser: username*, publicKey) --> bool
 - Remove user (RemoveUser: username*) --> bool
 - Reset DB (resetDB: ) --> bool
@@ -14,6 +15,9 @@ This function appends a new user to the user data csv file, storing the username
 
 ### GetUser --> publicKey, privateKey
 This function retrieves the public key for the given username, and the private key if it is known.
+
+### UpdateUser --> bool
+This function updates the public key and private key for the given username in the user data csv file.
 
 ### ValidateUser --> bool
 This function validates the user by checking the public key against the stored public key for the given username.

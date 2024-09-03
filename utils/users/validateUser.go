@@ -6,6 +6,7 @@ This modile handles all elements of user data, including the creation and replic
 Functions included in this file:
 - Create user (CreateUser: username*, publicKey*, privateKey) --> bool
 - Get user (GetUser: username*) --> publicKey, privateKey
+- Update user (UpdateUser: username*, publicKey*, privateKey) --> bool
 - Validate user (ValidateUser: username*, publicKey) --> bool
 - Remove user (RemoveUser: username*) --> bool
 - Reset DB (resetDB: ) --> bool

@@ -6,6 +6,7 @@ This modile handles all elements of user data, including the creation and replic
 Functions included in this file:
 - Create user (CreateUser: username*, publicKey*, privateKey) --> bool
 - Get user (GetUser: username*) --> publicKey, privateKey
+- Update user (UpdateUser: username*, publicKey*, privateKey) --> bool
 - Validate user (ValidateUser: username*, publicKey) --> bool
 - Remove user (RemoveUser: username*) --> bool
 - Reset DB (resetDB: ) --> bool
@@ -28,6 +29,29 @@ func Test_CreateUser() bool {
 	t1 := CreateUser("testuser", "testpublickey", "testprivate")
 	ResetDB()
 	return t1
+}
+
+// Test_UpdateUser --> bool
+// This function tests the UpdateUser function by updating the public key for a known user and checking if the public key was successfully updated in the user data csv file.
+func Test_UpdateUser() bool {
+	if !(Test_CreateUser() && Test_ResetDB()) {
+		return false
+	}
+
+	// Create the user
+	CreateUser("testuser", "testpublickey", "testprivate")
+
+	// Update the public key for the user
+	t1 := UpdateUser("testuser", "newpublickey", "testprivate")
+
+	// Get the public key for the user
+	publicKey, _ := GetUser("testuser")
+
+	// Check if the public key was updated
+	t2 := publicKey == "newpublickey"
+
+	ResetDB()
+	return t1 && t2
 }
 
 // Test_GetUser --> bool
@@ -133,5 +157,5 @@ func Test_GetAuthority() bool {
 // Test_All --> bool
 // This function tests all functions in the users module.
 func Test_All() bool {
-	return Test_ResetDB() && Test_CreateUser() && Test_GetUser() && Test_ValidateUser() && Test_RemoveUser() && Test_GetAuthority()
+	return Test_ResetDB() && Test_CreateUser() && Test_GetUser() && Test_ValidateUser() && Test_RemoveUser() && Test_GetAuthority() && Test_UpdateUser()
 }

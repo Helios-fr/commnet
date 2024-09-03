@@ -10,7 +10,7 @@ Functions included in this file:
 - Validate user (ValidateUser: username*, publicKey) --> bool
 - Remove user (RemoveUser: username*) --> bool
 - Reset DB (resetDB: ) --> bool
-- Get Authority (GetAuthority: username*) --> int
+- Get Authority (GetAuthority: username*) --> bool
 */
 
 import (
@@ -20,9 +20,9 @@ import (
 	"os"
 )
 
-// GetUser --> publicKey, privateKey
-// This function retrieves the public key for the given username, and the private key if it is known.
-func GetUser(username string) (string, string) {
+// GetAuthority --> int
+// This function returns the line index of a given username in the user data csv file.
+func GetAuthority(username string) int {
 	// Open the user data csv file
 	file, err := os.Open("user_data.csv")
 	if err != nil {
@@ -35,7 +35,7 @@ func GetUser(username string) (string, string) {
 	reader.Comment = '#'
 
 	// Search for the user in the csv file
-	for {
+	for i := 0; ; i++ {
 		// Read the next line of the csv file
 		record, err := reader.Read()
 		if err == io.EOF {
@@ -47,11 +47,11 @@ func GetUser(username string) (string, string) {
 
 		// Check if the username matches the current record
 		if record[0] == username {
-			// Return the public key and private key
-			return record[1], record[2]
+			// Return the line index of the user
+			return i
 		}
 	}
 
-	// Return empty strings if the user is not found
-	return "", ""
+	// Return -1 if the user is not found
+	return -1
 }
