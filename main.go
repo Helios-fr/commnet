@@ -14,13 +14,7 @@ var (
 )
 
 func main() {
-	if !encryption.Test_All() {
-		log.Println("Encryption tests failed")
-	}
-	if !users.Test_All() {
-		log.Println("Users tests failed")
-	}
-	log.Println("All tests passed")
+	tests()
 
 	// verify the user data is correct
 	log.Println("Username:", username)
@@ -39,4 +33,23 @@ func main() {
 
 	// start listening for connections on port 6875
 	go server.Listen(server_port, self_privateKey)
+}
+
+func tests() {
+	if !encryption.Test_All() {
+		log.Println("Encryption tests failed")
+		log.Println("Generated keys:", encryption.Test_GenerateKeyPair())
+		log.Println("Encrypted message:", encryption.Test_Encrypt())
+		log.Println("Decrypted message:", encryption.Test_Decrypt())
+	}
+	if !users.Test_All() {
+		log.Println("Users tests failed")
+		log.Println("Create user:", users.Test_CreateUser())
+		log.Println("Get user:", users.Test_GetUser())
+		log.Println("Update user:", users.Test_UpdateUser())
+		log.Println("Validate user:", users.Test_ValidateUser())
+		log.Println("Remove user:", users.Test_RemoveUser())
+		log.Println("Reset DB:", users.Test_ResetDB())
+		log.Println("Get Authority:", users.Test_GetAuthority())
+	}
 }

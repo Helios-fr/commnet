@@ -17,6 +17,7 @@ import (
 	"encoding/csv"
 	"log"
 	"os"
+	"strings"
 )
 
 // CreateUser --> bool
@@ -26,6 +27,11 @@ func CreateUser(username string, publicKey string, privateKey string) bool {
 	if privateKey == "" {
 		privateKey = "N/A" // Handle empty private key appropriately
 	}
+
+	// remove the new line character from the public and private keys
+	// replace the new line character with an empty string
+	publicKey = strings.ReplaceAll(publicKey, "\n", "")
+	privateKey = strings.ReplaceAll(privateKey, "\n", "")
 
 	// Check if the user already exists
 	if pub, priv := GetUser(username); pub != "" || priv != "" {

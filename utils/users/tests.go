@@ -1,5 +1,10 @@
 package users
 
+import (
+	"log"
+	"os"
+)
+
 /*
 This modile handles all elements of user data, including the creation and replication of users from peers, the storage and retrival of user data, and the management of user data.
 
@@ -157,5 +162,20 @@ func Test_GetAuthority() bool {
 // Test_All --> bool
 // This function tests all functions in the users module.
 func Test_All() bool {
-	return Test_ResetDB() && Test_CreateUser() && Test_GetUser() && Test_ValidateUser() && Test_RemoveUser() && Test_GetAuthority() && Test_UpdateUser()
+	// if the user data csv file does not exist, create it
+	if _, err := os.Stat("user_data.csv"); os.IsNotExist(err) {
+		file, err := os.Create("user_data.csv")
+		if err != nil {
+			log.Println("Error creating file:", err)
+			return false
+		}
+		file.Close()
+	}
+
+	// copy the user data csv file to a backup file
+	os.Rename("user_data.csv", "user_data.csv.bak")
+	t1 := Test_ResetDB() && Test_CreateUser() && Test_GetUser() && Test_ValidateUser() && Test_RemoveUser() && Test_GetAuthority() && Test_UpdateUser()
+	os.Remove("user_data.csv")
+	os.Rename("user_data.csv.bak", "user_data.csv")
+	return t1
 }
