@@ -44,6 +44,8 @@ func Test_Decrypt() (success bool) {
 	return err == nil
 }
 
+// Test_All --> bool
+// This function tests all functions in the encryption module.
 func Test_All() (success bool) {
 	return Test_GenerateKeyPair() && Test_Encrypt() && Test_Decrypt()
 }

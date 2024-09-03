@@ -3,8 +3,8 @@ This  module handles all elements of the encryption and decryption of the data, 
 
 Functions included in this file:
 - Generate key pair (GenerateKeyPair) --> publicKey, privateKey
-- Encrypt data (Encrypt: data, publicKey) --> encryptedData
-- Decrypt data (Decrypt: encryptedData, privateKey) --> data
+- Encrypt data (Encrypt: data*, publicKey*) --> encryptedData
+- Decrypt data (Decrypt: encryptedData*, privateKey*) --> data
 
 ### GenerateKeyPair --> publicKey, privateKey
 This function generates a public and private key pair for the encryption and decryption of data.
