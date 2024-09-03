@@ -74,6 +74,10 @@ func UpdateUser(username string, publicKey string, privateKey string) bool {
 		}
 	}
 
+	// Close the connection to the files
+	file.Close()
+	newFile.Close()
+
 	// Remove the old user data csv file
 	err = os.Remove("user_data.csv")
 	if err != nil {
