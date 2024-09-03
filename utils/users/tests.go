@@ -9,6 +9,7 @@ Functions included in this file:
 - Validate user (ValidateUser: username*, publicKey) --> bool
 - Remove user (RemoveUser: username*) --> bool
 - Reset DB (resetDB: ) --> bool
+- Get Authority (GetAuthority: username*) --> int
 */
 
 // Test_ResetDB --> bool
@@ -102,8 +103,35 @@ func Test_RemoveUser() bool {
 	return t1 && t2
 }
 
+// Test_GetAuthority --> bool
+// This function tests the GetAuthority function by retrieving the authority level for a known user and checking if the authority level is correct.
+func Test_GetAuthority() bool {
+	// Test the CreateUser function first to ensure this test is valid
+	if !(Test_CreateUser() && Test_ResetDB()) {
+		return false
+	}
+
+	// Create the user
+	CreateUser("testuser", "testpublickey", "testprivate")
+
+	// Get the authority level for a known user
+	authority := GetAuthority("testuser")
+
+	// Check if the authority level is correct
+	t1 := authority == 0
+
+	// Get the authority level for an unknown user
+	authority = GetAuthority("unknownuser")
+
+	// Check if the authority level is -1
+	t2 := authority == -1
+
+	ResetDB()
+	return t1 && t2
+}
+
 // Test_All --> bool
 // This function tests all functions in the users module.
 func Test_All() bool {
-	return Test_ResetDB() && Test_CreateUser() && Test_GetUser() && Test_ValidateUser() && Test_RemoveUser()
+	return Test_ResetDB() && Test_CreateUser() && Test_GetUser() && Test_ValidateUser() && Test_RemoveUser() && Test_GetAuthority()
 }

@@ -9,6 +9,7 @@ Functions included in this file:
 - Validate user (ValidateUser: username*, publicKey) --> bool
 - Remove user (RemoveUser: username*) --> bool
 - Reset DB (resetDB: ) --> bool
+- Get Authority (GetAuthority: username*) --> int
 */
 
 // ValidateUser --> bool
