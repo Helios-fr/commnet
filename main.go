@@ -2,19 +2,16 @@ package main
 
 import (
 	"comnet/utils/encryption"
-	"fmt"
+	"comnet/utils/users"
+	"log"
 )
 
 func main() {
-
-	// Generate key pair
-	publicKey, privateKey, _ := encryption.GenerateKeyPair()
-
-	// Print public key
-	fmt.Println("Public key:")
-	fmt.Println(string(publicKey))
-
-	// Print private key
-	fmt.Println("Private key:")
-	fmt.Println(string(privateKey))
+	if !encryption.Test_All() {
+		log.Println("Encryption tests failed")
+	}
+	if !users.Test_All() {
+		log.Println("Users tests failed")
+	}
+	log.Println("All tests passed")
 }
