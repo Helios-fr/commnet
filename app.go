@@ -2,7 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
+
+	"commnet/backend/users"
 )
 
 // App struct
@@ -22,6 +23,17 @@ func (a *App) startup(ctx context.Context) {
 }
 
 // Greet returns a greeting for the given name
-func (a *App) Greet(name string) string {
-	return fmt.Sprintf("Hello %s, It's show time!", name)
+func (a *App) Login(name string) (any, any) {
+	// try to get the user from the database
+	user_public, user_private := users.GetUser(name)
+	if len(user_private) == 0 && len(user_public) != 0 {
+		// user does not exist
+		return nil, "User's private key is unknown"
+	}
+	if len(user_public) == 0 {
+		// user does not exist
+		return nil, "User does not exist, please create an account"
+	}
+
+	return name, nil
 }
