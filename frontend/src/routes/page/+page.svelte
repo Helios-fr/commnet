@@ -4,5 +4,4 @@
 </script>
 
 <h1>Hello {$name}!</h1>
-<button on:click={() => goto('/page')}>/page</button>
-<input type="text" bind:value={$name} />
+<button on:click={() => goto('/')}>/</button>
