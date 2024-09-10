@@ -1,8 +1,8 @@
 <script>
-    import { name } from '$lib/stores/name';
+    import { username } from '$lib/stores/username';
     import { goto } from '$app/navigation';
 </script>
 
-<h1>Hello {$name}!</h1>
-<button on:click={() => goto('/page')}>/page</button>
-<input type="text" bind:value={$name} />
+<h1>Hello {$username}!</h1>
+<button on:click={() => goto('/login')}>/login</button>
+<button on:click={() => goto('/register')}>/register</button>
