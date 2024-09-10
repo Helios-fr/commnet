@@ -19,6 +19,13 @@ func main() {
 	// Run the tests on the backend
 	tests()
 
+	// create the user default if it does not exist
+	pub, priv := users.GetUser("default")
+	if len(priv) == 0 && len(pub) == 0 {
+		pub, priv, _ = encryption.GenerateKeyPair()
+		users.CreateUser("default", pub, priv)
+	}
+
 	// Create an instance of the app structure
 	app := NewApp()
 
