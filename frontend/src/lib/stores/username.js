@@ -36,6 +36,12 @@ function createUsername() {
         });
     }
 
+    function getDefaultUsername() {
+        DefaultUsername().then(user => {
+            return user;
+        });
+    }
+
     logout();
 
     return {
@@ -49,3 +55,4 @@ function createUsername() {
 }
 
 export const username = createUsername();
+export var isLoggedIn = writable(false);
