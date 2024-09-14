@@ -10,10 +10,6 @@ export function Hello() {
   return window['go']['main']['App']['Hello']();
 }
 
-export function Login(arg1) {
-  return window['go']['main']['App']['Login'](arg1);
-}
-
-export function Register(arg1) {
-  return window['go']['main']['App']['Register'](arg1);
+export function Verify(arg1) {
+  return window['go']['main']['App']['Verify'](arg1);
 }

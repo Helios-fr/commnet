@@ -6,7 +6,6 @@ import (
 	"net"
 	"strings"
 
-	"commnet/backend/encryption"
 	"commnet/backend/users"
 )
 
@@ -32,46 +31,14 @@ func (a *App) Hello() string {
 }
 
 // Login is called when the user logs in, it returns the user name only if the user exists and the private key is known
-func (a *App) Login(name string) any {
-	fmt.Println("Login: ", name)
-	// try to get the user from the database
-	user_public, user_private := users.GetUser(name)
-	if len(user_private) == 0 && len(user_public) != 0 {
-		// user does not exist
-		fmt.Println("User does not exist, please create an account")
-		return "Error: User does not exist, please create an account"
-	}
-	if len(user_public) == 0 {
-		// user does not exist
-		fmt.Println("User does not exist, please create an account")
-		return "Error: User does not exist, please create an account"
+func (a *App) Verify(username string) any {
+	fmt.Println("Verify", username)
+	pub, priv := users.GetUser(username)
+	if len(pub) == 0 || len(priv) == 0 {
+		return "false"
 	}
 
-	return name
-}
-
-// Register is called when the user registers, it returns the user name only if the user does not exist
-func (a *App) Register(name string) any {
-	fmt.Println("Register: ", name)
-	// try to get the user from the database
-	user_public, _ := users.GetUser(name)
-	if len(user_public) != 0 {
-		// user exists
-		fmt.Println("User already exists, please login")
-		return "Error: User already exists, please login"
-	}
-
-	// generate keys for the user
-	user_public, user_private, _ := encryption.GenerateKeyPair()
-	if users.CreateUser(name, user_public, user_private) {
-		// user created
-		fmt.Println("User created")
-		return name
-	} else {
-		// user not created
-		fmt.Println("User not created")
-		return "Error: User not created"
-	}
+	return "true"
 }
 
 func (a *App) DefaultUsername() string {
