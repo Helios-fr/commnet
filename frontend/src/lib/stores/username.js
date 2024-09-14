@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { get, writable } from 'svelte/store';
 import { Verify, DefaultUsername } from '$lib/wailsjs/go/main/App.js';
 
 function createUsername() {
@@ -26,11 +26,16 @@ function createUsername() {
         set(user);
     }
 
+    async function getDefault() {
+        return await DefaultUsername();
+    }
+
     return {
         subscribe,
         set: (user) => set(user),
         verify: verify,
-        setDefault: setDefault
+        setDefault: setDefault,
+        getDefault: getDefault
     };
 }
 

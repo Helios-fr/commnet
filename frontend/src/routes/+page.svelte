@@ -1,36 +1,144 @@
 <script>
-    import { Hello } from '$lib/wailsjs/go/main/App.js';
     import { username, verified } from '$lib/stores/username.js';
     import { onMount } from 'svelte';
+    import { goto } from '$app/navigation';
+
+    let tab = 'login';
+    let checkValue = 'Check';
+
+    let temp_username = '';
+    $: {
+        temp_username = temp_username.toLowerCase();
+        checkValue = 'Check';
+        $verified = false;
+    }
+
+
+    async function check() {
+        await username.verify(temp_username);
+        if ($verified) {
+            checkValue = 'Verified';
+        } else {
+            checkValue = 'Invalid';
+        }
+    }
+
+    const loginSwitch = () => {
+        tab = 'login';
+        checkValue = 'Check';
+        $verified = false;
+    }
+
+    const loginSubmit = async (event) => {
+        event.preventDefault();
+        await username.verify(temp_username);
+        goto('/chat');
+    }
+
+    const registerSwitch = () => {
+        tab = 'register';
+        checkValue = 'Check';
+        $verified = false;
+    }
+
+    async function registerSubmit(event) {
+        event.preventDefault();
+        username.register(temp_username);
+        username.verify(temp_username);
+        goto('/chat');
+    }
+
+    const anonymousSwitch = () => {
+        tab = 'anonymous';
+    }
+
+    async function anonymousSubmit(event) {
+        event.preventDefault();
+        await username.setDefault();
+        goto('/chat');
+    }
 
     onMount(async () => {
         console.log($username);
         if ($username === '') {
             await username.setDefault();
         }
+        if (username.verify($username) && $username !== await username.getDefault()) {
+            goto('/chat');
+        }
+        $verified = false;
     });
-
-    let text = 'Press the button to fetch data from the backend';
-
-    async function helloWorld() {
-        text = await Hello();
-    }
 </script>
 
-<button class="btn" on:click={helloWorld}>{ text }</button>
+<!-- Centered with tabs login and register on top with two forms that submit to login and register functions that dont yet exist -->
+<div class="flex flex-col items-center justify-center h-screen">
+    <div role="tablist" class="tabs tabs-boxed">
+        {#if tab === 'login'}
+            <button role="tab" class="tab tab-active" on:click={loginSwitch}>Login</button>
+            <button role="tab" class="tab" on:click={registerSwitch}>Register</button>
+            <button role="tab" class="tab" on:click={anonymousSwitch}>Anonymous</button>
+        {:else if tab === 'register'}
+            <button role="tab" class="tab" on:click={loginSwitch}>Login</button>
+            <button role="tab" class="tab tab-active" on:click={registerSwitch}>Register</button>
+            <button role="tab" class="tab" on:click={anonymousSwitch}>Anonymous</button>
+        {:else if tab === 'anonymous'}
+            <button role="tab" class="tab" on:click={loginSwitch}>Login</button>
+            <button role="tab" class="tab" on:click={registerSwitch}>Register</button>
+            <button role="tab" class="tab tab-active" on:click={anonymousSwitch}>Anonymous</button>
+        {/if}
+    </div>
 
-<p class="mt-4">Username: { $username }</p>
-<p>Verified: { $verified }</p>
+    {#if tab === 'login'}
+        <div class="card shadow-xl flex justify-center items-center">
+            <form class="box p-6 mt-4 flex flex-col items-center">
+                <label for="username" class="label">Enter your username below</label>
 
-<h2 class="mt-8 mb-2 text-2xl font-bold">Buttons</h2>
+                <div class="join">
+                    <input type="text" id="username" name="username" class="input bg-base-200 join-item" placeholder="Username" bind:value={temp_username} required>
+                    <button 
+                        id="checkButton"
+                        class="btn join-item {$verified ? 'btn-success' : 'btn-primary'}"
+                        on:click={check}
+                        disabled={!temp_username || $verified}
+                    > { checkValue } </button>
+                </div>
+                <p class="text-center mt-2 text-xs">If you don't have an account, click <a on:click={registerSwitch} href="#" class="text-primary">here</a> to register</p>
 
-<div class="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-8">
-    <button class="btn">Default</button>
-    <button class="btn btn-primary">Primary</button>
-    <button class="btn btn-secondary">Secondary</button>
-    <button class="btn btn-accent">Accent</button>
-    <button class="btn btn-info">Info</button>
-    <button class="btn btn-success">Success</button>
-    <button class="btn btn-warning">Warning</button>
-    <button class="btn btn-error">Error</button>
+                <button type="submit" class="btn btn-primary mt-4" disabled={!$verified || !temp_username}>Login</button>
+            </form>
+        </div>
+    {:else if tab === 'register'}
+        <div class="card shadow-xl flex justify-center items-center">
+            <form class="box p-6 mt-4 flex flex-col items-center">
+                <label for="username" class="label">Enter your username below</label>
+
+                <div class="join">
+                    <input type="text" id="username" name="username" class="input bg-base-200 join-item" placeholder="Username" bind:value={temp_username} required>
+                    <button 
+                        id="checkButton"
+                        class="btn join-item {$verified ? 'btn-success' : 'btn-primary'}"
+                        on:click={check}
+                        disabled={!temp_username}
+                    > { checkValue } </button>
+                </div>
+
+                <p class="text-center mt-2 text-xs">If you already have an account, click <a on:click={loginSwitch} href="#" class="text-primary">here</a> to login</p>
+
+                <button type="submit" class="btn btn-primary mt-4" disabled={$verified || !temp_username}>Register</button>
+            </form>
+        </div>
+    {:else if tab === 'anonymous'}
+        <div class="card shadow-xl flex justify-center items-center">
+            <form class="box p-6 mt-4 flex flex-col items-center" on:submit={anonymousSubmit}>
+                <p class="text-center text-xs">You are about to enter as an anonymous user. Instead of a username, <br>
+                                               your IP address will be used to identify you. We recommend that you <br>
+                                               <a href="#" on:click={registerSwitch} class="text-primary">create an account</a> for the best experience</p>
+                <p class="text-center mt-2 text-xs">If you already have an account, click <a on:click={loginSwitch} href="#" class="text-primary">here</a> to login</p>
+
+                <button type="submit" class="btn btn-primary mt-4">Continue as Anonymous</button>
+            </form>
+        </div>
+    {/if}
+
 </div>
+
