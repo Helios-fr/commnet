@@ -6,6 +6,10 @@ export function DefaultUsername() {
   return window['go']['main']['App']['DefaultUsername']();
 }
 
+export function Hello() {
+  return window['go']['main']['App']['Hello']();
+}
+
 export function Login(arg1) {
   return window['go']['main']['App']['Login'](arg1);
 }

@@ -3,6 +3,8 @@
 
 export function DefaultUsername():Promise<string>;
 
+export function Hello():Promise<string>;
+
 export function Login(arg1:string):Promise<any>;
 
 export function Register(arg1:string):Promise<any>;

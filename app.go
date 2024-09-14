@@ -26,6 +26,11 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
+// Hello world function
+func (a *App) Hello() string {
+	return "Hello 👋"
+}
+
 // Login is called when the user logs in, it returns the user name only if the user exists and the private key is known
 func (a *App) Login(name string) any {
 	fmt.Println("Login: ", name)
