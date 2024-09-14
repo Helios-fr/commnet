@@ -21,13 +21,18 @@ function createUsername() {
         }
     }
 
+    async function setDefault() {
+        let user = await DefaultUsername();
+        set(user);
+    }
+
     return {
         subscribe,
         set: (user) => set(user),
-        verify: verify
+        verify: verify,
+        setDefault: setDefault
     };
 }
 
 export const username = createUsername();
-username.verify(await DefaultUsername());
 export const verified = writable(false);
